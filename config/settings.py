@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'habits',
     "users",
+    'django_celery_beat',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -36,6 +38,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -88,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -111,8 +114,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-###Первый способ авторизации:
-#закрываем доступ для НЕ авторизованных пользователей.
+### Первый способ авторизации:
+# закрываем доступ для НЕ авторизованных пользователей.
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
 #         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -122,18 +125,78 @@ REST_FRAMEWORK = {
 #     ]
 # }
 
-###Второй способ авторизации:
-#Доступ открыт для ВСЕХ!
+### Второй способ авторизации:
+# Доступ открыт для ВСЕХ!
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
 #срок действия Токенов
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),}
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7)
+}
+
+CELERY_TIMEZONE = TIME_ZONE
+
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True
+
+# Лимит времени выполнения задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# сюда складываются задачи очереди
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_tg_habits_reminder': {      # называем как хотим
+        'task': 'habits.tasks.send_tg_habits_reminder',       # название и расположение нашей задачи
+        'schedule': timedelta(seconds=10),        # периодичность выполнения задачи - кажд.10 секунд
+    },
+}
+
+#CORS_ALLOWED_ORIGINS = [*ALLOWED_HOSTS]     # Замените на адрес вашего фронтенд-сервера
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
+# и добавьте адрес бэкенд-сервера
+]
+
+#CORS_ALLOW_ALL_ORIGINS = False
+
+# Корректировки CORS от Наставника Олега Маслова.
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+
+    'http://localhost:8000',
+
+]
+
+CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
+CORS_ALLOWED_ORIGINS = CORS_ORIGIN_WHITELIST
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')      #указываем свою yandex почту
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')        #указываем пароль для ПРИЛОЖЕНИЯ!!! а НЕ почты!!!
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+TELEGRAM_URL = 'https://api.telegram.org/bot'
+TELEGRAM_USER_ID = os.getenv('TELEGRAM_USER_ID')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')

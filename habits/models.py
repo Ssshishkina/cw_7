@@ -10,13 +10,20 @@ class Habit(models.Model):
     Поле award указывается только для полезной привычки, если нет привязки к приятной
     '''
 
+    ACTION_CHOICES = [
+        ('cycling', 'велопрогулка'),
+        ('water', 'пить_воду'),
+        ('reading', 'чтение'),
+        ('fitness', 'фитнес'),
+    ]
+
     PERIOD_CHOICES = [
-        ('daily', 'Ежедневно'),
-        ('in 2 days', 'Каждые 2 дня'),
-        ('in 3 days', 'Каждые 3 дня'),
-        ('in 4 days', 'Каждые 4 дня'),
-        ('in 5 days', 'Каждые 5 дней'),
-        ('in 6 days', 'Каждые 6 дней'),
+        ('1', 'Ежедневно'),
+        ('2', 'Каждые 2 дня'),
+        ('3', 'Каждые 3 дня'),
+        ('4', 'Каждые 4 дня'),
+        ('5', 'Каждые 5 дней'),
+        ('6', 'Каждые 6 дней'),
         ('weekly', 'Еженедельно'),
     ]
 
@@ -26,7 +33,8 @@ class Habit(models.Model):
                                 help_text='Укажите место выполнения привычки', **NULLABLE)
     time = models.TimeField(verbose_name='Когда выполнить', help_text='Укажите время выполнения привычки',
                             **NULLABLE)
-    action = models.CharField(max_length=200, verbose_name='Что выполнить', help_text='Укажите действие привычки')
+    action = models.CharField(max_length=200, choices=ACTION_CHOICES, verbose_name='Что выполнить',
+                              help_text='Укажите действие привычки')
     is_nice = models.BooleanField(default=False, verbose_name='Приятная привычка')
     related_habit = models.ForeignKey('self', on_delete=models.SET_NULL, verbose_name='Связанная привычка',
                                       related_name='good_habit', **NULLABLE)
