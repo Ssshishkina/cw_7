@@ -6,7 +6,7 @@ from users.models import User
 class Command(BaseCommand):
     def handle(self, *args, **options):
         user = User.objects.create(
-            email='admin@sky.pro',
+            email='admin_admin@sky.pro',
             first_name='Admin',
             last_name='Adminov',
             telegram_id=settings.TELEGRAM_USER_ID,
@@ -14,5 +14,5 @@ class Command(BaseCommand):
             is_staff=True,
             is_active=True
         )
-        user.set_password('QWErty111')
+        user.set_password('vfif')
         user.save()

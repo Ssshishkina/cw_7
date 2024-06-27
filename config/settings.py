@@ -114,7 +114,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-### Первый способ авторизации:
+# # # Первый способ авторизации:
 # закрываем доступ для НЕ авторизованных пользователей.
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -125,7 +125,7 @@ REST_FRAMEWORK = {
 #     ]
 # }
 
-### Второй способ авторизации:
+# # # Второй способ авторизации:
 # Доступ открыт для ВСЕХ!
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -136,7 +136,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-#срок действия Токенов
+# срок действия Токенов
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7)
@@ -166,14 +166,14 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-#CORS_ALLOWED_ORIGINS = [*ALLOWED_HOSTS]     # Замените на адрес вашего фронтенд-сервера
+# CORS_ALLOWED_ORIGINS = [*ALLOWED_HOSTS]     # Замените на адрес вашего фронтенд-сервера
 
 CSRF_TRUSTED_ORIGINS = [
     "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
 # и добавьте адрес бэкенд-сервера
 ]
 
-#CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_ALL_ORIGINS = False
 
 # Корректировки CORS от Наставника Олега Маслова.
 CORS_ORIGIN_ALLOW_ALL = True
