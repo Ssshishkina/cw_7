@@ -5,19 +5,12 @@ from habits.models import Habit
 from habits.services import send_tg_message
 
 
-# тестовая задача проверки celery
-# @shared_task
-# def send_tg_habits_reminder():
-#     today = timezone.now().today().date
-#     print(today)
-
-
 @shared_task
 def send_tg_habits_reminder():
     '''ТГ-рассылка напоминаний о том, в какое время и какие
     привычки необходимо выполнять, если дата выполнения - сегодня.'''
     today = timezone.now().date()     # .today().date отобразится в формате даты
-    habits = Habit.objects.all()     # фильтруем привычки
+    habits = Habit.objects.all(filter='is_public')     # фильтруем привычки
     # telegram_id_list = []     # выводим список привычек
 
     for habit in habits:

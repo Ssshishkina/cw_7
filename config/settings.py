@@ -112,22 +112,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-}
-
-# # # Первый способ авторизации:
-# закрываем доступ для НЕ авторизованных пользователей.
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAuthenticated',
-#     ]
-# }
-
-# # # Второй способ авторизации:
-# Доступ открыт для ВСЕХ!
-REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -136,7 +120,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-# срок действия Токенов
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7)
@@ -169,8 +152,7 @@ CELERY_BEAT_SCHEDULE = {
 # CORS_ALLOWED_ORIGINS = [*ALLOWED_HOSTS]     # Замените на адрес вашего фронтенд-сервера
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
-# и добавьте адрес бэкенд-сервера
+    "https://read-and-write.example.com",
 ]
 
 # CORS_ALLOW_ALL_ORIGINS = False
@@ -189,8 +171,8 @@ CORS_ALLOWED_ORIGINS = CORS_ORIGIN_WHITELIST
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')      #указываем свою yandex почту
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')        #указываем пароль для ПРИЛОЖЕНИЯ!!! а НЕ почты!!!
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')      # указываем свою yandex почту
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')        # указываем пароль для ПРИЛОЖЕНИЯ!!! а НЕ почты!!!
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 

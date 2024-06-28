@@ -12,3 +12,7 @@ django-celery-beat==2.6.0
 redis==5.0.6
 eventlet==0.36.1
 setuptools==65.5.0
+coverage==7.5.4
+flake8==7.1.0
+django-cors-headers==4.4.0
+requests==2.32.3

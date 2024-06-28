@@ -65,4 +65,3 @@ class PeriodicityValidator:
         periodicity = dict(value).get(self.field)
         if periodicity is not None and int(periodicity) > 7:
             raise ValidationError('Нельзя выполнять привычку реже, чем 1 раз в 7 дней.')
-        

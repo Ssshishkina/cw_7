@@ -35,4 +35,3 @@ class UserDestroyAPIView(DestroyAPIView):
     '''Контроллеры на основе дженерик (удаление Пользователя).'''
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
-    
